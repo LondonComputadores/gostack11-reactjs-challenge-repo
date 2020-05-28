@@ -1,19 +1,35 @@
 {
-  "name": "frontend",
+  "name": "gostack11-reactjs-challenge-repo",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "axios": "^0.19.2",
-    "axios-mock-adapter": "^1.18.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
-  },
+  "main": "index.js",
+  "repository": "git@github.com:LondonComputadores/gostack11-reactjs-challenge-repo.git",
+  "author": "LondonComputadores <london.computadores@gmail.com>",
+  "license": "MIT",
   "scripts": {
-    "start": "react-scripts start",
+    "dev": "webpack-dev-server --mode development",
     "build": "react-scripts build",
+    "start": "react-scripts start",
     "test": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.10.1",
+    "@babel/core": "^7.10.0",
+    "@babel/preset-env": "^7.10.0",
+    "@babel/preset-react": "^7.10.0",
+    "axios": "^0.19.2",
+    "axios-mock-adapter": "^1.18.1",
+    "babel-loader": "^8.1.0",
+    "cors": "^2.8.5",
+    "css-loader": "^3.5.3",
+    "jest": "^26.0.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.1",
+    "style-loader": "^1.2.1",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11"
   },
   "browserslist": {
     "production": [
@@ -28,12 +44,10 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.10.1",
     "@testing-library/jest-dom": "^5.3.0",
     "@testing-library/react": "^10.0.2",
-    "@testing-library/user-event": "^7.1.2"
-  },
-  "main": "index.js",
-  "repository": "git@github.com:LondonComputadores/gostack11-reactjs-challenge-repo.git",
-  "author": "LondonComputadores <london.computadores@gmail.com>",
-  "license": "MIT"
+    "@testing-library/user-event": "^7.1.2",
+    "webpack-dev-server": "^3.11.0"
+  }
 }
