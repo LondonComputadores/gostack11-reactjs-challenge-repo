@@ -1,54 +1,84 @@
 import React, { useState, useEffect } from "react";
-import api from './services/api';
-
-import "./styles.css";
-
-import Header from './components/Header';
+import api from "./services/api";
 
 function App() {
   const [repositories, setRepositories] = useState([]);
+  const [title, setTitle] = useState("");
+  const [techs, setTechs] = useState("");
 
   useEffect(() => {
-    api.get('repositories').then(response => {
-      setRepositories(response.data);
-    });
+    const fetchRepositories = () => {
+      api.get("/repositories").then((res) => {
+        setRepositories(res.data);
+      });
+    };
+    fetchRepositories();
   }, []);
 
-  async function handleAddRepository() {
-    const response = await api.post('repositories', {
-      title: "Desafio ReactJS",
-      url: "https://github.com/josepholiveira",
-      techs: ["React", "Node.js"],
-  });
-
-    const repository = response.data;
-
-    setRepositories([...repositories, repository]);
-  }  
-    
-  async function handleRemoveRepository(id) {
-    const response = await api.delete('repository/${id}');
-    
-    setRepositories(repositories.filter((repository) => repository.id !== id));
+  async function handleAddRepository(e) {
+    e.preventDefault();
+    const newRepository = {
+      title,
+      url: "",
+      techs,
+    };
+    const { data } = await api.post("/repositories", newRepository);
+    setRepositories((prevState) => [...prevState, data]);
   }
 
-  return (  
-  
-    <>      
-      <Header title="Repositories"/>
+  async function handleRemoveRepository(id) {
+    const { status } = await api.delete(`/repositories/${id}`);
+    if (status === 204) {
+      setRepositories(() => repositories.filter((repo) => repo.id !== id));
+    }
+  }
 
-      <ul data-testid='repository-list'>
-        {repositories.map((repository => <li key={repository.id}>
-                                          {repository.title})}
-          <button onClick={() => handleRemoveRepository(repo.id)}>
+  function handleTitleChange(e) {
+    setTitle(e.target.value);
+  }
+
+  function handleTechsChange(e) {
+    const techsStr = e.target.value;
+    const techsArr = techsStr.split(", ");
+    setTechs(techsArr);
+  }
+
+  return (
+    <section>
+      <form onSubmit={handleAddRepository}>
+        <input type="text" onChange={handleTitleChange} placeholder="Title" />
+        <input type="text" onChange={handleTechsChange} placeholder="Techs" />
+        <button type="submit">Adicionar</button>
+      </form>
+
+      <ul data-testid="repository-list">
+        {repositories.map((repository) => (
+          <li key={repository.id}>
+            <h3>
+              <a
+                href={repository.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {repository.title}
+              </a>
+            </h3>
+
+            <span>{repository.likes}</span>
+
+            <ul>
+              {repository.techs.map((tech) => (
+                <li key={tech}>{tech}</li>
+              ))}
+            </ul>
+
+            <button onClick={() => handleRemoveRepository(repository.id)}>
               Remover
-          </button>
-          </li>))}
+            </button>
+          </li>
+        ))}
       </ul>
-
-      <button onClick={handleAddRepository}>Adicionar</button>
-    </>
-
+    </section>
   );
 }
 
